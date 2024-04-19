@@ -1,0 +1,9 @@
+This file is used by convertToRetinalAngle.m to determine which conversion to use for each experiment based on the experiment date. These conversions are needed because the light crafter flips images depending on how the display monitors on the rig are set up. convertToRetinalAngle.m will find the proper date, and then convert use the key term listed next to conversion to convert the angles using the proper mapping function.
+0 degrees should be rightwards movement.
+90 degrees should be ventral to dorsal movement.
+
+date: 20200801
+conversion: flipUpDown$
+
+date: 99999999
+conversion: example$

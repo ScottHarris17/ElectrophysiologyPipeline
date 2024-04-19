@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Instructions</title>
+    <style>
+        body {
+            margin: 25px;
+            background-color: #f8fff7;
+            font-family:Arial
+        }
+        .stepByStep {
+        }
+
+        .stepByStepHeading {
+            font-size: 20px;
+            font-weight: bold;
+            padding-top: 15px;
+            padding-left: 10px;
+        }
+
+        .stepByStepBody {
+            padding-left:35px;
+        }
+
+        code {
+            background-color: #e3e3e3;
+            border:thin
+        }
+         
+        kbd { /*from mozilla*/
+            background-color: #eee;
+            border-radius: 3px;
+            border: 1px solid #b4b4b4;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+            color: #333;
+            display: inline-block;
+            font-size: 0.85em;
+            font-weight: 700;
+            line-height: 1;
+            padding: 2px 4px;
+            white-space: nowrap;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1 class="headline">Physiology Analysis Pipeline: Instructions</h1>
+    <div class="version">Current Version: 1.1.0</div>
+    <div class="byline">
+        <address class="author">By <a rel="author">Scott Harris</a></address>
+        <time pubdate datetime="2023-03-08" title="March 8th, 2023">3/8/2023</time></br>
+        <time pubdate datetime="2023-10-02" title="October 2, 2023">Subversion Release Date - 10/02/2023</time>
+    </div>
+    <div class="requirements">
+        <h3><u>Requirements</u></h3>
+        <p>The following software must be installed on your device in order to run the pipeline:</p>
+        <ul>
+            <li><a href="https://mathworks.com" target="_blank">MATLAB 2020+</a></li>
+            <li><a href="https://lucadellasantina.github.io/Clarinet/" target="_blank">Clarinet V2.X</a> (make sure this is on your MATLAB path)</li>
+        </ul>
+        <p>Also ensure that the physiologyPipeline folder and all of its subfolders have also been added to your MATLAB path. The pipeline will run on any operating system.</p>
+
+    </div>
+    <br /><br />
+          <div class="stepByStep">
+              <h3><u>Step-By-Step</u></h3>
+              <div class="stepByStepHeading">1) Loading or Creating a Project</div>
+              <div class="stepByStepBody">
+                  <p>When you record from a cell, its data must be associated with a project. This can be something specific (e.g. <i>Ptprk-/-</i> recordings) or general (e.g. practice recordings). Before you analyze any cell, you must either select an existing project to associate the data with, or create a new project. The analyzed data for each cell will be stored in its own file, but also linked to this project.</p>
+                  <p>
+                      Launch the pipeline by typing the command <code>>>physiologyPipeline</code> into the MATLAB command window. A window will appear with the options to <button style="color: indianred"><b>Create Project</b></button> or <button style="color: indianred"><b>Load Project</b></button>. If this is your first time using the pipeline, or if you would like to start a new project, select the "Create Project" button. If you are adding to a project that you or someone else previously created select the "Load Project" button.
+                      <ul>
+                          <li>
+                              <p><b>Creating a Project:</b> Follow the prompts to create a poject name (using camelCase), description, and folder in which to save the project batch data.The pipeline will create a new directory called "[yourProjectName]_physiologyBatch". This directory will be used to save the cellList (a list of all cells associated with the project) and a second file with metadata about the project. <i>Note: Projects for the Dunn Lab should be saved on the shared Box drive, somewhere inside of the "Dunn Lab" directory. Best practice is to minimize the path length between the pipeline (Box\Dunn Lab\Users\Lab\AnalysisPipelines\physiologyPipeline) and the project location (e.g., by saving to a subdirectory inside the physiologyPipeline directory).</i><br /></p>
+                          </li>
+                          <li>
+                              <p><b>Loading a Project:</b> A list selection box will open containing the name of all previously created projects. Select the project name that you would like to contribute to. Alternatively, you may also select the "BROWSE" option and then select the project folder called "[yourProjectName]_physiologyBatch"</p>
+                          </li>
+                      </ul>
+                  </p>
+                  Once a project is successfully created or loaded, its name should show up in the bottom left hand corner of the app, under the label "<i>Current Project:</i>".
+              </div>
+              <div class="stepByStepHeading">2) Project Tags</div>
+              <div class="stepByStepBody">
+                  <p>
+                      Each project has tags associated with it. These are strings that you can use to label individual cells within this project. For example one tag might read <i>"Amacrine Cells"</i>. To interact with tags, use the options menu:<br />
+                      <img src="imgs/tags.png" alt="tags.png" style="width: 20%; height:20%; padding-top:10px; padding-left:30px" />
+                      <br />
+                      Each available tag has a key, or definition, that describes what the tag means. For example, the <i>Amacrine Cells</i> tag might be defined as <i>interneurons in the retina</i>. Tags are consistent across projects. That means that all projects that use the tag <i>Amacrine Cells</i> will assign it the same key.
+                  </p>
+                  <p>
+                      The options menu allows you to perform the following actions:
+                      <ul>
+                          <li><b>Add Tags:</b> Add a new tag to the loaded project. If the tag that you have added already exists in another project, you will be prompted to use that definition or choose a new name for your tag</li>
+                          <li><b>View Tags This Project:</b> Print out a list of the tags and their keys that have previously been added to this project in the MATLAB command window.</li>
+                          <li><b>Remove Tags:</b> Delete a tag that has previously added to this project.</li>
+                          <li><b>View Tags All Projects:</b> Print out a list of tags and their keys that have been previously added across all projects.</li>
+                      </ul>
+                  </p>
+              </div>
+              <div class="stepByStepHeading">3) Recording Info</div>
+              <div class="stepByStepBody">
+                  <p>
+                      Information about the recording must be added before you can analyze any cells. Use the <button style="color: forestgreen"><b>Recording Info</b></button> button to open a new window:<br />
+                      <img src="imgs/recordingInfo.png" width="400" height="400" alt="recordingInfo.png" style="padding-top:10px; padding-left:30px" />
+                      <br /><br />
+                      Add the following information to each edit field if known:
+                      <ul>
+                          <li><b>ID:</b> The animal's identification number or tag</li>
+                          <li><b>Genotype:</b> The animal's genotype. (Use WT for wildtype)</li>
+                          <li><b>DoB:</b> The animal's date of birth</li>
+                          <li><b>Sex:</b> The animal's sex</li>
+                          <li><b>LabID:</b> The animal's identification code used for breeding by the lab</li>
+                          <li><b>CageNumber:</b> The cage that the animal came from</li>
+                          <li><b>Treatments:</b> Any special experimental treatments that the animal had, such as a viral injection or food deprivation</li>
+                          <li><b>Tags:</b> This is open ended. Any tags that you would like to include. Use commas to separate.</li>
+                          <li><b>ExperimentalGroup:</b> The name of the experimental group that the animal belongs to, if there is one.</li>
+                          <li><b>Rig:</b> The recording rig that was used for the electrophysiology experiment. Current options include 'E' and 'F' for the Dunn lab.</li>
+                          <li><b>RecordingDate:</b> The date that the electrophysiology experiment was performed.</li>
+                          <li><b>ExperimenterName:</b> The name of the person who recorded the data. If more than one person, use comma delineation.</li>
+                          <li><b>AnalyzerName:</b> Your name. Or the name of the person that will perform the analysis.</li>
+                      </ul>
+                      Once you have filled out as much of this information as possible, hit the <button style="background-color: forestgreen; border:solid; font-weight:normal">Submit Changes</button> button and the window should close.
+                  </p>
+              </div>
+              <div class="stepByStepHeading">4) Load Recordings</div>
+              <div class="stepByStepBody">
+                  <p>Toggle the <button style="color:blue"><b>1 Amp</b></button> / <button style="color:blue"><b>2 Amps</b></button> button in the bottom right to reflect the number of amplifier channels that you used for your recording. (This is new for this subversion of the pipeline, and it changes the way that the system exports the symphony data into _clarinetExport.mat files - see below).</p>
+                  <p>Select the <button style="color: mediumpurple"><b>Load Recording(s)</b></button> button to load recording data into the pipeline. A folder dialogue window should open. </p>
+                  <p> <b>Symphony .h5 file:</b>If you are analyzing data that has never been analyzed before, select the .h5 file that was saved from symphony. If the file is on box, it may have to be downloaded, so this process may take a while and your computer may temporarily freeze. Once the .h5 file has downloaded, the pipeline will parse through each epoch for each cell and then save a single .mat file called "<i>[cellName]_clarinetExport.mat</i>" for each cell and save the file to the same folder that the .h5 file was in. Once this process is done, follow the steps described in the next paragraph.</p>
+                  <p><b>_clarinetExport.mat files:</b> If you are analyzing data that has been previously downloaded and saved before as _clarinetExport.mat files, use the folder dialogue to select each of the cells that you would like to analyze (use <kbd>SHIFT</kbd> or <kbd>CTRL/⌘CMD</kbd> to select multiple cells at once). <i>IMPORTANT: If you also saved a centerData file (from the centerFinder app) for this recording, select that .mat file along with each of the cells that you want to analyze. This is critical for saving the coordinates of each cell.</i></p>
+
+                  <p>The _clarinetExport files contain 1xn structure called <code>epochs</code> where n = the number of epochs recorded for this cell. This structure has 2 fields: <code>epoch</code> and <code>meta</code>. Epoch contains the raw trace from the amplifier for each epoch. Meta contains the metadata associated with the stimulus and the recording. You do not have to interact directly with this file (if you don't want to), but it should not be deleted either.</p>
+              </div>
+              <div class="stepByStepHeading">5) Data Viewer</div>
+              <div class="stepByStepBody">
+                  <p>The Data Viewer is where you will perform the majority of the analysis. After having pressed the <button style="color: mediumpurple"><b>Load Recording(s)</b></button> button in the pipeline window, a new "Data Viewer" window will appear for each cell that you selected.</p>
+
+                  <p>If a cell has been analyzed before you will be prompted as to whether you would like to update the recording information (step 3) <br /><br> <img src="imgs/recordingInfoOption.png" alt="recordingInfoOption.png" /><br />
+                  Note, this window appears regardless of whether the recording information that you entered matches the previous information saved for the cell.</p>
+
+                  <br />
+                  <br />
+                  <img src="imgs/labeledDataViewer.svg" alt="labeledDataViewer.svg" /><br /><br />
+                  <p>Using the dataviewer: 
+                  <ol>
+                      <li><b>Epoch Log Table:</b> In this table, each epoch from the recording is sorted and organized into chronilogical order. A new entry (row) is made for each time that you pressed the "record" button in Symphony during the experiment (Note for developers: for some stimulus types this may not be true. Edit the symphony stimulus files directly to add a randomLabel property if needed [see moving bar stimulus file for an example]).
+                      <ul>
+                          <li><u>Analyze:</u> Checking these boxes will enter all epochs included in those entries in the Will Analyze box (#10) to be included in the next analysis that you run.</li>
+                          <li><u>Protocol:</u> The name of the protocol that you ran in Symphony</li>
+                          <li><u># Epochs:</u> The number of epochs that have been included in the entry</li>
+                          <li><u>Start Index:</u> The epoch number of the first epoch in the entry</li>
+                          <li><u>Stop Index:</u> The epoch number of the last epoch in the entry</li>
+                          <li><u>Online Analysis:</u> The analysis type selected during the recording. This can be helpful if, for example, you distinguish between voltage clamp and cell attached while performing the experiment, but it isn't necessary to use.</li>
+                      </ul>
+                      </li>
+                      <li><b>View Epoch #:</b> If you would like to view the raw traces from the amplifier for any epochs enter them here and then press the <button>Plot Raw Data</button> button (#5). If you enter just one epoch number at a time, you can also view all of the metadata for the epoch by selecting the <button>View Details</button> button (#4).</li>
+                      <li><b>Fill Button:</b> Fills the View Epoch # box (#2) with all of the values currently listed in the Will Analyze box (#10).</li>
+                      <li><b>View Details Button:</b> View the metadata of the epoch listed in the View Epoch # box (#2). This will only work for one epoch at a time.</li>
+                      <li><b>Plot Raw Data Button:</b> Plots the amplifier traces for the epochs displayed in the View Epoch # box (#2). If multiple epochs are listed, then multiple plots will appear. If spike detection is turned on (#6) then a raster plot will be plotted over the trace. Extra options can be found by right clicking on this button.</li>
+                      <li><b>Spike Detection Toggle:</b> Turns the spike detector On or Off when ploting raw data using the <button>Plot Raw Data</button> button (#5). For developers: using this toggle just changes the "show spike detection" context menu for button #5.</li>
+                      <li>
+                          <b>Spike Detection Dropdown:</b> Select which spike detector you would like to use. The pipeline comes with multiple spike detectors that have been designed for different use cases. Briefly:
+                          <ul>
+                              <li><u>localSpikeDetector_SH_PP:</u> Used for most extracellular recordings.</li>
+                              <li><u>simpleSpikeDetector_SH_PP:</u> An alternative to the local spike detector. Used for extracellular recordings when the local spike detector is not working.</li>
+                              <li><u>trendsSpikeDetector_SH_PP:</u> Used for current clamp recordings. </li>
+                              <li><u>spikeDetector_SK_PP:</u> A copy of the spike detector that is used by symphony. This detector is very fast but usually inacurrate.</li>
+                          </ul>
+                          Spike detector source files are housed in physiologyPipeline/analysisScripts/spikeDetection. Each detector is a subclass of <code>spikeDetector</code>. You can make your own spike detector by adding one here and adding a new option to the Data Viewer's Spike Detection Dropdown menu.
+                      </li>
+                      <li><b>Set Props Button:</b> Clicking this button opens a new window where the default properties of the current spike detector can be edited. This is almost always necessary to detect spikes well. Usually a setting can be found where spikes are detectable on every epoch of the next group that will be analyzed. If spikes aren't detectable on a subset of epochs, they can be deleted from the Will Analyze box (#10) so that the analyzed data is not dirtied by imprecise spike detection.</li>
+                      <li><b>Analysis Tags:</b> Listed here are all of the tags that have been assigned to the current project (see step 2 above, "Project Tags"). Select the ones that apply to the current cell. Multiple tags can be selected using the <kbd>SHIFT</kbd> or <kbd>CTRL/⌘CMD</kbd> keys. Note that these tags are saved only once per cell, not for each analysis that you run. The tags that are selected on the last time that you save the analysis for the cell (#18) will be what counts.</li>
+                      <li><b>Will Analyze:</b> This box contains a list of epochs that will be analyzed next. For example, if I wanted to analyze the flash response from cell attached recordings for my cell, I would enter all of the epoch numbers that contain such data. Separate multiple epochs using spaces. You can also use the check boxes in the Epoch Log Table (#1) to automatically fill this box with epoch numbers. You can also manually remove epochs after checking boxes. The epochs that will ultimately be analyzed are only those numbers that are included in this box, regardless of which check boxes in the Epoch Log Table are marked.</li>
+                      <li><b>Recording Type Dropdown:</b> Select the type of recording that was performed from the drop down list for the next analysis. This will determine the type of analysis that is performed (e.g. if spikes or currents are measured).</li>
+                      <li><b>Analysis Type Dropdown:</b> Select the type of analysis that you would like to run. Typically, this should have the same name as the stimulus that was used during the recording (an exception is made for the "LED Pulse" stimulus on symphony, which is analyzed using the "Flash" analysis type). In most cases, this box will autoupdate according to the last analysis box that you checked in the Epoch Log Table (#1).</li>
+                      <li><b>Solution:</b> If you would like to specify the solution that was used during the experiment, this can be done through the analysis menu at top of the Data Viewer window under the Pipette Solutions option. Select the appropriate solution for the next analysis. Once assigned, the label should be updated in the GUI.</li>
+                      <li><b>Suffix:</b> The suffix is used to tag specific analyses. The suffix may not contain special characters or spaces and must be a valid MATLAB fieldname. It is best practice to start suffixes with an underscore, _. In practice, there is very little reason to use anything other than an ID tag as the suffix. ID tags allow you to define specific stimuli (e.g. moving bar with speed X, intensity Y, width Z, and which happened between Jan. 2 2022 and Aug. 10 2023 on rig E.). To assign an ID use suffixes in the format "_IDXXXX" where the X's denote a unique string that can be linked to a more detailed description of the epoch metadata that defines that particular ID. In the pipeline, there is a list of current IDs under physiologyPipeline/appData/stimulusIDs. stimulusIDs.xlsx is a human-friendly list of all IDs. stimulusIDs_PP.mat is a MATLAB friendly, and more complete list of current IDs.</li>
+                      <li><b>ID Button:</b> Use this button to try to quickly find the stimulus ID that matches the epochs that are currently in the Will Analyze box (#10). This button will pull on data in the stimulusIDs_PP.mat file (see description for Suffix box, #14).</li>
+                      <li><b>AVOID tag:</b> Check this box to add an AVOID tag to the next analysis. If marked, it will be saved in the analysis metadata. This can be used when you have a good reason to exclude the upcoming analysis from batch data, for example.</li>
+                      <li><b>Run Analysis Button:</b> Press this button to run the next analysis. The epoch numbers in the Will Analyze box (#14) will be used to conduct the analysis specified by the Recording Type (#11) and Analysis Type (#12) Dropdowns. If necessary, the spike detector specified by the Spike Detection Dropdown (#7) will be used, along with the parameters that were set using the window that appears after selecting the <button>Set Props</button> button (#8). Analyses can take some time to run, especially if they involve spike detection or a large number of epochs. Once finished, the analysis will be added to a structure called <code>CellParameters</code>. This structure is hidden while using this app, but will be saved to the same place as the _clarinetExport file for the current cell when done. Every time you run a new analysis the results will be appended to this same <code>CellParameters</code> structure. A copy of the structure will also be saved in a second .mat file for the project. This file is in the folder that houses the current project and contains a variable called <code>cellList</code>, which is a list of all the cells associated with this project and all of the analyses that have been done for the cell. This list is valuable for conducting batch analyses.</li>
+                      <li><b>Save Button:</b> This button will be enabled if there is a new analysis that can be saved. Pressing it saves all data to the <code>CelParameters</code> file for the current cell, and to the batch file for the current project.</li>
+                      <li><b>Save Figure Button:</b> All analyses produce a basic figure(s) in addition to parsing data. This figure will appear once the analysis finishes running. Press this button to save the figure as an .svg file to the same location as the cell's _clarinetExport.mat <code>CellParameters</code> files. Note, this button will not work if the figure is closed prior to saving. You also must save a figure before running a new analysis or it will have to be saved manually.</li>
+                      <li><b>Revert Button:</b> This button allows you to revert back to the last saved state. If you made a mistake in the latest analysis that you ran press this button. The <code>CellParameters</code> structure associated with the last time you pressed the <button style="color:red">Save</button> button (#18) will be reloaded and you can resume from there. If you haven't saved anything yet, pressing this button is equivalent to starting over entirely for the analysis for this cell.</li>
+                  </ol>
+                  </p>
+                  <p>The menu bars at the top of the Data Viewer can also be helpful. Use the File menu to open the note.txt file for the current experiment. Use the Analysis menu to change the pipette solution, include a paired cell (such as for vertically-tuned ON DS cells) or adjust some analysis parameters.</p>
+
+                  <p>Work your way through each of the Data Viewer windows that appear (one for each cell). The order that you do the analyses in is not important. When you are done with a given cell, you may close its Data Viewer window without affecting any of the other windows that are open.
+                  </p>
+
+              </div>
+          </div>
+          
+          <div class="Creating Your Own Analyses">
+
+          </div>
+
+          <div class="Batch Analyses">
+
+          </div>
+
+        <div class="development">
+            <h3><u>Development</u></h3>
+            <p>The pipeline undergoes continuous development. Contact <a href="mailto:scott.harris@ucsf.edu">Scott Harris</a> for further questions, development inquiries, or recommendations.</p>
+        </div>
+
+           
+</body>
+</html>
