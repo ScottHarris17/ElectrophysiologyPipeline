@@ -1,7 +1,6 @@
 classdef LedPulseFamily_PP < analysisSuperClass_PP
     
     properties %properties inherited from superclass
-        recordingDate
     end
         
     methods
