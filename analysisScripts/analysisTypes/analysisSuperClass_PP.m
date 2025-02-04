@@ -124,7 +124,11 @@ classdef analysisSuperClass_PP
             %To ensure you're grabbing data from the correct rig, make sure
             %the obj.recordingRig property is set to the proper identified
             %(e.g. 'E' or 'F').
-            fID = 'C:\Users\mrsco\Box\Dunn Lab\Users\Lab\AnalysisPipelines\physiologyPipeline\appData\rigInformation_PP.txt';
+            dataPath = obj.data.(obj.cellID).fileLocation;
+            pathToPipeline = dataPath(1:strfind(dataPath, 'physiologyPipeline')-1);
+            rigInformationFilePath = 'physiologyPipeline/appData/rigInformation_PP.txt';
+            fID = fullfile(pathToPipeline, rigInformationFilePath);
+           
             lookUpFile = fopen(fID, 'r');
 
             info = fscanf(lookUpFile, '%s');
