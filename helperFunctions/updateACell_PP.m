@@ -6,12 +6,13 @@ function updateACell_PP(rootPath, cellListFName)
 %-Add a field and value
 %-Rename a field
 %-Reassign a value
+%-Update coordinates
 %-Add or remove a tag
 %-Sync cell list
 %-Delete the cell from cellList entirely
 
 %% Select the cell that you would like to change
-cd(fullfile(rootPath, '/recordings'))
+cd(changePathSlashesUnix(fullfile(rootPath, '/recordings')))
 [fname, fpath] = uigetfile('*.mat', 'Select the cell analysis structure you would like to edit');
 
 %check that the user input an _Analysis File
@@ -22,12 +23,12 @@ end
 
 %load the CellParameters and Batch files
 load(fullfile(fpath, fname)) %load CellParameters structure for this cell to the workspace
-load(cellListFName) %load cellList structure to the workspace
+load(changePathSlashesUnix(cellListFName)) %load cellList structure to the workspace
 cellName = CellParameters.cellID;
 
 %% Query the operation that user would like to perform
 operations = {'Remove a Field', 'Add a Field and Value',...
-    'Rename a field', 'Reassign a Value', 'Add or Remove A Tag',...
+    'Rename a field', 'Reassign a Value', 'Update Coordinates', 'Add or Remove A Tag',...
     'Sync cellList', 'Delete From Cell List'};
 
 [selectionIndex, tf] = listdlg('ListString', operations ,...
@@ -176,8 +177,36 @@ if selectionIndex < numel(operations) - 1 %last two operations don't work with t
         end
         
         eval(accessString);
-        
+
     elseif selectionIndex == 5
+        %% Update coordinates
+        [fCenter, pCenter] = uigetfile('*.mat', 'Select the center data file for this recording');
+        load(fullfile(pCenter, fCenter)); %loads center data
+        if exist('sizeData', 'var') ~=1
+            disp('Incorrect file selected to update coordinates. You must select a center data file. Restart and try again')
+            return
+        end
+
+        %Ask the user to enter the data
+        XandYCoords = inputdlg({'Enter X Coordinate', 'Enter Y Coordinate'}, 'Input');
+        xCoord = XandYCoords{1};
+        yCoord = XandYCoords{2};
+        
+        if isnan(str2double(xCoord)) || isnan(str2double(yCoord)) %check user entries are numeric
+            disp('Could not update coordinates. Please try again entering only numeric values for the X and Y coordinates')
+            return
+        end
+
+        mockData = struct(); %you're going to create a "mock" data structure to mimic how the data is formatted when first loaded in the physiology pipeline
+        mockData.centerData = sizeData;
+        mockData.thisCell.epochs(1).meta.coordinates = [xCoord, ', ', yCoord];
+        
+        computedMockData = computeCoordinates_PP(mockData);
+
+        CellParameters.coordinates = computedMockData.thisCell.coordinates;
+        disp(CellParameters.coordinates)
+
+    elseif selectionIndex == 6
         %% Add or remove a tag
         if isfield(CellParameters, 'Tags')
             currentTags = CellParameters.Tags;

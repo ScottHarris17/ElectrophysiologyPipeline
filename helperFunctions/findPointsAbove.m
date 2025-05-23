@@ -1,0 +1,17 @@
+function pointsAbove = findPointsAbove(normalizedData,thresholdPastZero, frame, preTime, stimTime, tailTime, sampleRate)
+
+preTimeInPoints = preTime * sampleRate/1000;
+stimTimeInPoints = stimTime * sampleRate/1000;
+
+smoothedNormalizedTrace = slidingsmooth(normalizedData, frame, 'median');
+pointsAbove = smoothedNormalizedTrace > thresholdPastZero;
+pointsAbove(1:preTimeInPoints) = 0;
+
+changeInCrossings = diff(pointsAbove);
+indexOfCrossings = find(changeInCrossings == 1);
+
+% if(size(indexOfCrossings, 2) > 1)
+%     pointsAbove(indexOfCrossings(2):end) = 0;
+% end
+
+end
