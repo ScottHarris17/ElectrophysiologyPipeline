@@ -4,8 +4,8 @@
 
 function data = computeCoordinates_PP(data)
 isCenter = 0;
-if ~isfield(data, 'centerData')
-    warning('Center data not included')
+if ~isfield(data, 'centerData') || numel(fieldnames(data.centerData))==0
+    disp('Center data not included')
 else
     isCenter = 1;
     radius = data.centerData.transformedCoordinates.medianRadius; %in um
@@ -63,10 +63,10 @@ for i = 1:size(cells, 1)
         
         if ~added
             if isfield(data.(cell_i), 'coordinates')
-                warning(['Did not add coordinates or center data for, ', cell_i, ' but previous data found'])
+                disp(['Did not add coordinates or center data for, ', cell_i, ' but previous data found'])
             else
                 data.(cell_i).coordinates = 'unknown';
-                warning(['Coordinates unknown for ', cell_i, ' added as unknown'])
+                disp(['Coordinates unknown for ', cell_i, ' added as unknown'])
             end
         end
     end
