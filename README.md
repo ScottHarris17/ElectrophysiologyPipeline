@@ -1,7 +1,7 @@
 # ElectrophysiologyPipeline
 Fully automated analysis pipeline for electrophysiology data.
 
-<u>Requirements</u>
+<h4>Requirements</h4>
 <ul>
   <li>MATLAB 2020a+</li>
   <li>Windows, Linux, or macOS</li>
